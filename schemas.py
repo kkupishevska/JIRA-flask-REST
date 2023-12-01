@@ -42,6 +42,8 @@ class ProjectSchema(PlainProjectSchema):
   # createdByUser = fields.Nested(PlainUserSchema, dump_only=True)
   createdByUserId = fields.Int()
   owner = fields.Nested(PlainUserSchema, dump_only=True)
+  team_members = fields.List(fields.Nested(PlainUserSchema(), dump_only=True))
+
   # createdByUser = fields.Nested('UserSchema', exclude=('projects',), dump_only=True)
 
 class IssueSchema(PlainIssueSchema):
@@ -69,3 +71,9 @@ class UpdateIssueSchema(Schema):
   assigneeUserId = fields.Int()
   createdDate = fields.DateTime()
   updatedDate = fields.DateTime()
+
+class ProjectMemberSchema(Schema):
+  message = fields.Str()
+  project = fields.Nested(PlainProjectSchema)
+  user = fields.Nested(PlainIssueSchema)
+  

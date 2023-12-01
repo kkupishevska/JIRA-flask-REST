@@ -11,3 +11,7 @@ class ProjectModel(db.Model, UtilsClass):
   description = db.Column(db.Text)
   createdByUserId = db.Column(db.Integer, db.ForeignKey('user.id'))
   createdByUser = db.relationship('UserModel', foreign_keys=[createdByUserId])
+  ownerId = db.Column(db.Integer, db.ForeignKey('user.id'))
+  owner = db.relationship('UserModel', foreign_keys=[ownerId])
+  team_members = db.relationship('UserModel', secondary='project_members', back_populates='projects')
+  
