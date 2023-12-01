@@ -3,21 +3,22 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_smorest import Api
 
-from .resources.hello import blp as HelloBlp
+db = SQLAlchemy()
 from .config import config
 
-db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app(config_mode):
   app = Flask(__name__)
   app.config.from_object(config[config_mode])
 
-  api = Api(app)
-
-  api.register_blueprint(HelloBlp)
-
   db.init_app(app)
   migrate.init_app(app, db)
+
+  api = Api(app)
+  # from resources.hello import blp as HelloBlp
+  # api.register_blueprint(HelloBlp)
+  from .resources.projects import blp as ProjectsBlp
+  api.register_blueprint(ProjectsBlp)
 
   return app

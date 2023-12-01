@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, validate
-from project import PlainProjectSchema
+from old_schemas.project import PlainProjectSchema
 
 class PlainUserSchema(Schema):
   id = fields.Int(dump_only=True)
@@ -14,3 +14,7 @@ class UpdateUserSchema(Schema):
 
 class UserSchema(PlainUserSchema):
   projects = fields.List(fields.Nested(PlainProjectSchema(), dump_only=True))
+
+class LoginSchema(Schema):
+  email = fields.Str(required=True)
+  password = fields.Str(required=True)

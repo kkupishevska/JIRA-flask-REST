@@ -14,6 +14,7 @@ class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv("DEVELOPMENT_DATABASE_URL")
+    JWT_SECRET_KEY = '8cSaYvIWWx9grVku4HNqdQYsdCCX0Y9t'
 
 class TestingConfig(Config):
     TESTING = True

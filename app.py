@@ -1,7 +1,36 @@
 import os
-from . import create_app
+from flask import Flask
+from flask_migrate import Migrate
+from flask_smorest import Api
+from flask_jwt_extended import JWTManager
 
-app = create_app(os.getenv('CONFIG_MODE'))
+from db import db
+import models 
+from resources.hello import blp as HelloBlp
+from resources.projects import blp as ProjectsBlp
+from resources.users import blp as UsersBlp
 
-if __name__ == '__main__':
-  app.run()
+from config import config
+
+migrate = Migrate()
+
+def create_app():
+  app = Flask(__name__)
+  app.config.from_object(config[os.getenv('CONFIG_MODE')])
+
+  db.init_app(app)
+  migrate.init_app(app, db)
+  jwt = JWTManager(app)
+
+  api = Api(app)
+  api.register_blueprint(HelloBlp)
+  api.register_blueprint(ProjectsBlp)
+  api.register_blueprint(UsersBlp)
+
+  return app
+
+
+# app = create_app(os.getenv('CONFIG_MODE'))
+
+# if __name__ == '__main__':
+#   app.run()

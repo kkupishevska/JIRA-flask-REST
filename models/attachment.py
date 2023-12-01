@@ -1,4 +1,4 @@
-from .. import db
+from app import db
 
 from models.utils import UtilsClass
 
@@ -10,4 +10,4 @@ class AttachmentModel(db.Model, UtilsClass):
   filename = db.Column(db.String(255), nullable=False)
   filePath = db.Column(db.String(255), nullable=False)
   uploadDate = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
-  issue = db.relationship('Issue')
+  issue = db.relationship('IssueModel', foreign_keys=[issueId], back_populates='attachments')

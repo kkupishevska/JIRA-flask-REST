@@ -1,4 +1,4 @@
-from .. import db
+from db import db
 
 from models.utils import UtilsClass
 
@@ -10,4 +10,4 @@ class ProjectModel(db.Model, UtilsClass):
   projectName = db.Column(db.String(255), nullable=False)
   description = db.Column(db.Text)
   createdByUserId = db.Column(db.Integer, db.ForeignKey('user.id'))
-  createdByUser = db.relationship('User', foreign_keys=[createdByUserId])
+  createdByUser = db.relationship('UserModel', foreign_keys=[createdByUserId])

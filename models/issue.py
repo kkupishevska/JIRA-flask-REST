@@ -1,4 +1,4 @@
-from .. import db
+from db import db
 
 from models.utils import UtilsClass
 
@@ -17,8 +17,11 @@ class IssueModel(db.Model, UtilsClass):
   assigneeUserId = db.Column(db.Integer, db.ForeignKey('user.id'))
   createdDate = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
   updatedDate = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
-  reporterUser = db.relationship('User', foreign_keys=[reporterUserId])
-  assigneeUser = db.relationship('User', foreign_keys=[assigneeUserId], back_populates='assignedIssues')
+  reporterUser = db.relationship('UserModel', foreign_keys=[reporterUserId])
+  # assigneeUser = db.relationship('UserModel', foreign_keys=[assigneeUserId], back_populates='assignedIssues')
+  assigneeUser = db.relationship('UserModel', foreign_keys=[assigneeUserId])
 
-  comments = db.relationship('Comment', back_populates='issue', lazy='dynamic', cascade='all, delete')
+  comments = db.relationship('CommentModel', back_populates='issue', lazy='dynamic', cascade='all, delete')
+  attachments = db.relationship('AttachmentModel', back_populates='issue', lazy='dynamic', cascade='all, delete')
+
   
