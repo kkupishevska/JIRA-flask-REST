@@ -45,14 +45,6 @@ class UserLogin(MethodView):
 
     abort(404, message='A user with such email and password does not exist.')
 
-# @blp.route('/logout')
-# class UserLogout(MethodView):
-#   @jwt_required()
-#   def post(self):
-#     jti = get_jwt()['jti']
-#     BLOCKLIST.add(jti)
-#     return {'message': 'Successfuly logged out.'}, 200
-
 
 @blp.route('/users')
 class UsersList(MethodView):
