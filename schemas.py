@@ -19,6 +19,14 @@ class PlainIssueSchema(Schema):
   description = fields.Str()
   status = fields.Str()
 
+class PlainIssueCommentSchema(Schema):
+  id = fields.Int(dump_only=True)
+  userId = fields.Int(required=True)
+  commentText = fields.Str(required=True, validate=validate.Length(max=1000))
+
+class PlainCommentSchema(PlainIssueCommentSchema):
+  issueId = fields.Int(required=True)
+  
 class UpdateUserSchema(Schema):
   username = fields.Str()
   email = fields.Str(validate=validate.Email())
@@ -57,7 +65,7 @@ class IssueSchema(PlainIssueSchema):
   updatedDate = fields.DateTime()
   reporterUser = fields.Nested(PlainUserSchema, dump_only=True)
   assigneeUser = fields.Nested(PlainUserSchema, dump_only=True)
-  # comments = fields.List(fields.Nested(PlainProjectSchema(), dump_only=True))
+  comments = fields.List(fields.Nested(PlainCommentSchema(), dump_only=True))
   # attachments = fields.List(fields.Nested(PlainProjectSchema(), dump_only=True))
 
 class UpdateIssueSchema(Schema):
@@ -76,4 +84,10 @@ class ProjectMemberSchema(Schema):
   message = fields.Str()
   project = fields.Nested(PlainProjectSchema)
   user = fields.Nested(PlainIssueSchema)
+
+class CommentSchema(PlainCommentSchema):
+  user = fields.Nested(PlainUserSchema, dump_only=True)
+  createdDate = fields.DateTime()
   
+class UpdateCommentSchema(Schema):
+  commentText = fields.Str(validate=validate.Length(max=1000))

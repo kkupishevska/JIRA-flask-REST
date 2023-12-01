@@ -10,6 +10,7 @@ from resources.hello import blp as HelloBlp
 from resources.projects import blp as ProjectsBlp
 from resources.users import blp as UsersBlp
 from resources.issues import blp as IssuesBlp
+from resources.comments import blp as CommentsBlp
 
 from config import config
 
@@ -28,11 +29,6 @@ def create_app():
   api.register_blueprint(ProjectsBlp)
   api.register_blueprint(UsersBlp)
   api.register_blueprint(IssuesBlp)
+  api.register_blueprint(CommentsBlp)
 
   return app
-
-
-# app = create_app(os.getenv('CONFIG_MODE'))
-
-# if __name__ == '__main__':
-#   app.run()

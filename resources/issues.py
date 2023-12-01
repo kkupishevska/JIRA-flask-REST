@@ -3,8 +3,9 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError
 
-from schemas import IssueSchema, UpdateIssueSchema, PlainIssueSchema
+from schemas import IssueSchema, UpdateIssueSchema, CommentSchema, PlainIssueCommentSchema
 from models.issue import IssueModel
+from models.comment import CommentModel
 from db import db
 
 logging.basicConfig(level=logging.DEBUG)
@@ -71,3 +72,24 @@ class IssuesList(MethodView):
       abort(500, message=str(e))
 
     return issue
+  
+@blp.route('/issue/<string:issue_id>/comments')
+class IssueComments(MethodView):
+  @blp.response(200, CommentSchema(many=True))
+  def get(self, issue_id):
+    issue = IssueModel.query.get_or_404(issue_id)
+
+    return issue.comments.all()
+  
+  @blp.arguments(PlainIssueCommentSchema)
+  @blp.response(201, CommentSchema)
+  def post(self, comment_data, issue_id):
+    comment = CommentModel(**comment_data, issueId=issue_id)
+
+    try:
+      db.session.add(comment)
+      db.session.commit()
+    except SQLAlchemyError as e:
+      abort(500, message=str(e))
+
+    return comment
