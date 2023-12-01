@@ -9,6 +9,7 @@ import models
 from resources.hello import blp as HelloBlp
 from resources.projects import blp as ProjectsBlp
 from resources.users import blp as UsersBlp
+from resources.issues import blp as IssuesBlp
 
 from config import config
 
@@ -26,6 +27,7 @@ def create_app():
   api.register_blueprint(HelloBlp)
   api.register_blueprint(ProjectsBlp)
   api.register_blueprint(UsersBlp)
+  api.register_blueprint(IssuesBlp)
 
   return app
 

@@ -17,9 +17,9 @@ class IssueModel(db.Model, UtilsClass):
   assigneeUserId = db.Column(db.Integer, db.ForeignKey('user.id'))
   createdDate = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
   updatedDate = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
-  reporterUser = db.relationship('UserModel', foreign_keys=[reporterUserId])
-  # assigneeUser = db.relationship('UserModel', foreign_keys=[assigneeUserId], back_populates='assignedIssues')
-  assigneeUser = db.relationship('UserModel', foreign_keys=[assigneeUserId])
+  reporterUser = db.relationship('UserModel', foreign_keys=[reporterUserId], back_populates='reportedIssues')
+  assigneeUser = db.relationship('UserModel', foreign_keys=[assigneeUserId], back_populates='assignedIssues')
+  # assigneeUser = db.relationship('UserModel', back_populates='assignedIssues')
 
   comments = db.relationship('CommentModel', back_populates='issue', lazy='dynamic', cascade='all, delete')
   attachments = db.relationship('AttachmentModel', back_populates='issue', lazy='dynamic', cascade='all, delete')
