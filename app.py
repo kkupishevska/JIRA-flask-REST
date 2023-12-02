@@ -3,6 +3,7 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 from db import db
 import models 
@@ -19,6 +20,7 @@ migrate = Migrate()
 def create_app():
   app = Flask(__name__)
   app.config.from_object(config[os.getenv('CONFIG_MODE')])
+  CORS(app)
 
   db.init_app(app)
   migrate.init_app(app, db)
