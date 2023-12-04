@@ -14,4 +14,6 @@ class ProjectModel(db.Model, UtilsClass):
   ownerId = db.Column(db.Integer, db.ForeignKey('user.id'))
   owner = db.relationship('UserModel', foreign_keys=[ownerId])
   team_members = db.relationship('UserModel', secondary='project_members', back_populates='projects')
+
+  issues = db.relationship('IssueModel', back_populates='project', lazy='dynamic', cascade='all, delete')
   
