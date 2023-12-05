@@ -9,12 +9,12 @@ class Config:
     OPENAPI_SWAGGER_UI_PATH = "/swagger-ui"
     OPENAPI_VERSION = "3.0.3"
     OPENAPI_URL_PREFIX = "/"
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv("DEVELOPMENT_DATABASE_URL")
-    JWT_SECRET_KEY = '8cSaYvIWWx9grVku4HNqdQYsdCCX0Y9t'
 
 class TestingConfig(Config):
     TESTING = True
