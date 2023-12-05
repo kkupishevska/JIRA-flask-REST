@@ -19,11 +19,13 @@ class Issue(MethodView):
   # GET ISSUE
   @blp.response(200, IssueSchema)
   def get(self, issue_id):
+    '''Get issue information'''
     issue = IssueModel.query.get_or_404(issue_id)
     return issue
 
   # DELETE ISSUE METHOD
   def delete(self, issue_id):
+    '''Delete issue'''
     # jwt = get_jwt()
     # if not jwt.get('is_admin'):
     #   abort(401, message='Blah-blah, no roots')
@@ -36,6 +38,7 @@ class Issue(MethodView):
   @blp.arguments(UpdateIssueSchema)
   @blp.response(200, IssueSchema)
   def put(self, issue_data, issue_id):
+    '''Edit issue'''
     logger.debug(f"Received issue_data in put method: {issue_data} {type(issue_data)}")
     if (issue := IssueModel.query.get_or_404(issue_id)):
       issue.update_attributes(**issue_data)
@@ -57,12 +60,14 @@ class IssuesList(MethodView):
   # GET ISSUES LIST
   @blp.response(200, IssueSchema(many=True))
   def get(self):
+    '''Get issues list'''
     return IssueModel.query.all()
   
   # CREATE ISSUE METHOD
   @blp.arguments(IssueSchema)
   @blp.response(201, IssueSchema)
   def post(self, issue_data):
+    '''Create new issue'''
     issue = IssueModel(**issue_data)
 
     try:
@@ -77,6 +82,7 @@ class IssuesList(MethodView):
 class IssueComments(MethodView):
   @blp.response(200, CommentSchema(many=True))
   def get(self, issue_id):
+    '''Get issue`s comments'''
     issue = IssueModel.query.get_or_404(issue_id)
 
     return issue.comments.all()
@@ -84,6 +90,7 @@ class IssueComments(MethodView):
   @blp.arguments(PlainIssueCommentSchema)
   @blp.response(201, CommentSchema)
   def post(self, comment_data, issue_id):
+    '''Add new comment to issue'''
     comment = CommentModel(**comment_data, issueId=issue_id)
 
     try:

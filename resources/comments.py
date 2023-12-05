@@ -15,8 +15,8 @@ blp = Blueprint('Comments', __name__, description='Operations on comments')
 
 @blp.route('/comments/<string:comment_id>')
 class commentComment(MethodView):
-  # DELETE COMMENT METHOD
   def delete(self, comment_id):
+    '''Delete comment'''
     comment = CommentModel.query.get_or_404(comment_id)
     db.session.delete(comment)
     db.session.commit()
@@ -26,6 +26,7 @@ class commentComment(MethodView):
   @blp.arguments(UpdateCommentSchema)
   @blp.response(200, CommentSchema)
   def put(self, comment_data, comment_id):
+    '''Edit comment'''
     logger.debug(f"Received comment_data in put method: {comment_data} {type(comment_data)}")
     if (comment := CommentModel.query.get_or_404(comment_id)):
       comment.update_attributes(**comment_data)
@@ -47,12 +48,14 @@ class commentList(MethodView):
   # GET COMMENTS LIST
   @blp.response(200, CommentSchema(many=True))
   def get(self):
+    '''Get all comments'''
     return CommentModel.query.all()
   
   # CREATE COMMENT METHOD
   @blp.arguments(CommentSchema)
   @blp.response(201, CommentSchema)
   def post(self, comment_data):
+    '''Add new comment'''
     comment = CommentModel(**comment_data)
 
     try:

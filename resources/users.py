@@ -15,6 +15,7 @@ blp = Blueprint('Users', __name__, description='Operations with users')
 class UserRegister(MethodView):
   @blp.arguments(PlainUserSchema)
   def post(self, user_data):
+    '''Register new user'''
     if UserModel.query.filter(UserModel.email == user_data['email']).first():
       abort(409, message='A user with that email already exists.')
 
@@ -33,6 +34,7 @@ class UserRegister(MethodView):
 class UserLogin(MethodView):
   @blp.arguments(LoginSchema)
   def post(self, login_data):
+    '''Login method: returns token'''
     user = UserModel.query.filter(UserModel.email == login_data['email']).first()
     if user and pbkdf2_sha256.verify(login_data['password'], user.password):
       identity = {
@@ -50,6 +52,7 @@ class UserLogin(MethodView):
 class UsersList(MethodView):
   @blp.response(200, UserSchema(many=True))
   def get(self):
+    '''Get all users'''
     return UserModel.query.all()
   
 
@@ -58,11 +61,13 @@ class UserItem(MethodView):
 
   @blp.response(200, UserSchema)
   def get(self, user_id):
+    '''Get user information by id'''
     return UserModel.query.get_or_404(user_id)
   
   @blp.arguments(UpdateUserSchema)
   @blp.response(200, UserSchema)
   def put(self, user_data, user_id):
+    '''Edit user information'''
     if user := UserModel.query.get_or_404(user_id):
       user.update_attributes(**user_data)
     else: user = UserModel(id=user_id, **user_data)
@@ -76,7 +81,7 @@ class UserItem(MethodView):
     return user
   
   def delete(self, user_id):
-
+    '''Delete user'''
     user = UserModel.query.get_or_404(user_id)
 
     db.session.delete(user)
