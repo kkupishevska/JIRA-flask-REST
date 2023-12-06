@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
@@ -10,6 +11,7 @@ class Config:
     OPENAPI_VERSION = "3.0.3"
     OPENAPI_URL_PREFIX = "/"
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=30)
 
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
