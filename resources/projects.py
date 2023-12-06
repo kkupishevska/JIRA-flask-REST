@@ -2,8 +2,9 @@ import logging
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError
+from flask_jwt_extended import jwt_required, get_jwt
 
-from schemas import ProjectSchema, UpdateProjectSchema, ProjectMemberSchema, IssueSchemaForProject, IssueSchema
+from schemas import ProjectSchema, UpdateProjectSchema, ProjectMemberSchema, IssueSchemaForProject, IssueSchema, CreateIssueInsideProjectSchema
 from models.project import ProjectModel
 from models.user import UserModel
 from models.issue import IssueModel
@@ -115,6 +116,7 @@ class LinkProjectsAndMembers(MethodView):
   
 @blp.route('/projects/<string:project_id>/issues')
 class IssueComments(MethodView):
+  @jwt_required()
   @blp.response(200, IssueSchemaForProject(many=True))
   def get(self, project_id):
     '''Return all project issues'''
@@ -122,7 +124,7 @@ class IssueComments(MethodView):
 
     return project.issues.all()
   
-  @blp.arguments(IssueSchema)
+  @blp.arguments(CreateIssueInsideProjectSchema)
   @blp.response(201, IssueSchema)
   def post(self, issue_data, project_id):
     '''Create new issue'''
