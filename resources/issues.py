@@ -3,7 +3,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError
 
-from schemas import IssueSchema, UpdateIssueSchema, CommentSchema, PlainIssueCommentSchema
+from schemas import IssueSchema, UpdateIssueSchema, CommentSchema, PlainIssueCommentSchema, CreateIssueSchema
 from models.issue import IssueModel
 from models.comment import CommentModel
 from db import db
@@ -64,7 +64,7 @@ class IssuesList(MethodView):
     return IssueModel.query.all()
   
   # CREATE ISSUE METHOD
-  @blp.arguments(IssueSchema)
+  @blp.arguments(CreateIssueSchema)
   @blp.response(201, IssueSchema)
   def post(self, issue_data):
     '''Create new issue'''

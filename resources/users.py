@@ -34,7 +34,7 @@ class UserRegister(MethodView):
 class UserLogin(MethodView):
   @blp.arguments(LoginSchema)
   def post(self, login_data):
-    '''Login method: returns token'''
+    '''Login method: returns token that expires in 30 days'''
     user = UserModel.query.filter(UserModel.email == login_data['email']).first()
     if user and pbkdf2_sha256.verify(login_data['password'], user.password):
       identity = {
